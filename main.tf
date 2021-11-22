@@ -1,14 +1,16 @@
-resource "aws_iam_policy" "s3-full-access" {
-     name   = "S3FullAccess"
+resource "aws_iam_policy" "s3-rds-full-access" {
+     name   = "S3andRDSFullAccess"
      path   = "/"
      policy = jsonencode(
           {
              Statement = [
                  {
-                     Action   = "s3:*"
+                     Action   = [
+                          "s3:*",
+                          "rds:*"
+                        ],
                      Effect   = "Allow"
                      Resource = "*"
-                     Sid      = "S3FullAccess"
                   },
               ]
              Version   = "2012-10-17"
@@ -24,7 +26,7 @@ resource "aws_iam_role" "my-iam-role" {
 resource "aws_iam_policy_attachment" "policy-attach" {
   name       = "policy-attachment"
   roles      = ["${aws_iam_role.my-iam-role.name}"]
-  policy_arn = "${aws_iam_policy.s3-full-access.arn}"
+  policy_arn = "${aws_iam_policy.s3-rds-full-access.arn}"
 }
 
 #resource "aws_quicksight_data_source" "quicksight_ds" {
