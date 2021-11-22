@@ -7,11 +7,11 @@ terraform {
   }
 
 #S3 bucket for state file
-# backend "s3" {
-#    bucket = "bucket_name"
-#    key    = "path"
-#    region = "us-east-1"
-#  }
+backend "s3" {
+    bucket = "terraform-state-bucket-s3"
+    key    = "state"
+    region = "us-east-1"
+  }
 
 }
 
