@@ -16,6 +16,11 @@ resource "aws_iam_policy" "s3-full-access" {
     )
 }
 
+resource "aws_iam_role" "example" {
+     name = "iam-role"     
+     assume_role_policy = aws_iam_policy.s3-full-access.arn
+}
+
 #resource "aws_quicksight_data_source" "quicksight_ds" {
 #  data_source_id = "example-id"
 #  name           = "quicksight_s3"
