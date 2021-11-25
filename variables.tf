@@ -1,10 +1,22 @@
-variable "instance_type" {
+variable "vpc_id" {
    type = string
 }
 
 variable "private_subnet_tag" {
    type = string
-   default = "public_subnet"
+   default = "private"
+}
+
+variable "public_subnet_tag" {
+   type = string
+   default = "public"
+}
+
+variable "common_tags" {
+   type = map(any)
+   default = {
+        name = "elk_stack"
+   }
 }
 
 variable "ami_name" {
@@ -20,5 +32,5 @@ variable "subnet_public" {
 }
 
 variable "vpc_cidr" {
-   type = list(string)
+   type = string
 }
