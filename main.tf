@@ -1,46 +1,10 @@
-resource "aws_iam_policy" "s3-rds-full-access" {
-     name   = "S3andRDSFullAccess"
-     path   = "/"
-     policy = jsonencode(
-          {
-             Statement = [
-                 {
-                     Action   = [
-                          "s3:*",
-                          "rds:*"
-                        ],
-                     Effect   = "Allow"
-                     Resource = "*"
-                  },
-              ]
-             Version   = "2012-10-17"
-          }
-    )
+module "elk" {
+  source              = "JamesWoolfenden/elk/aws"
+  version             = "0.2.15"
+  ami_name            = var.ami_name
+  ingress_cidrs       = ["0.0.0.0/0"]
+  ssh_cidrs           = ["0.0.0.0/0"]
+  instance_type       = var.instance_type
+  private_subnet_tag  = var.private_subnet_tag
+  vpc_cidr            = var.vpc_cidr
 }
-
-resource "aws_iam_role" "my-iam-role" {
-     name = "my-iam-role"     
-     assume_role_policy = "${file("assumerolepolicy.json")}"
-}
-
-resource "aws_iam_policy_attachment" "policy-attach" {
-  name       = "policy-attachment"
-  roles      = ["${aws_iam_role.my-iam-role.name}"]
-  policy_arn = "${aws_iam_policy.s3-rds-full-access.arn}"
-}
-
-#resource "aws_quicksight_data_source" "quicksight_ds" {
-#  data_source_id = "example-id"
-#  name           = "quicksight_s3"
-#
-#  parameters {
-#    s3 {
-#      manifest_file_location {
-#        bucket = "bucketname"
-#        key    = "path/to/manifest.json"
-#      }
-#    }
-#  }
-#
-#  type = "S3"
-#}
